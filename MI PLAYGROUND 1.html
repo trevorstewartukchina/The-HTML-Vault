@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>How I Learn Best — Gardner Kids (Complete)</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Fredoka:wght@600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --ink:#0f172a; --muted:#64748b; --glass:#ffffffcc;
+  --pri:#7c3aed; --sec:#00a2ff;
+  --rad:20px; --shadow:0 12px 30px #0000001a;
+  --L:#f2e7ff; --M:#e3f2fd; --MU:#e6fffb; --S:#fff7ed; --B:#ecfccb; --E:#fef9c3; --I:#f3e8ff; --N:#e8f5e9;
+  --gutter:16px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; color:var(--ink);
+  font-family:'Quicksand',system-ui,Segoe UI,Arial;
+  overflow-x:hidden;
+  background:
+    radial-gradient(70vw 70vw at 10% -20%, #e0f2fe 0%, transparent 60%),
+    radial-gradient(70vw 70vw at 110% 10%, #ede9fe 0%, transparent 60%),
+    linear-gradient(120deg, #eef2ff, #e0f7fa);
+}
+.blob{position:fixed; width:45vw; height:45vw; border-radius:50%; filter:blur(50px); opacity:.45; pointer-events:none; z-index:-1; animation:float 16s ease-in-out infinite alternate;}
+.blob.b1{background:#c7d2fe; top:-10vh; left:-10vw}
+.blob.b2{background:#f5d0fe; bottom:-15vh; right:-10vw; animation-delay:2s}
+@keyframes float{0%{transform:translate(0,0) scale(1)}100%{transform:translate(3vw,-2vh) scale(1.08)}}
+
+.topbar{position:sticky; top:0; z-index:50; backdrop-filter:blur(10px); background:var(--glass); border-bottom:1px solid #e2e8f0}
+.topbar-inner{max-width:1100px; margin:0 auto; padding:8px var(--gutter); display:flex; gap:12px; align-items:center}
+.brand{font-family:'Fredoka'; font-weight:800; color:var(--pri); font-size:1.15rem}
+.badges{display:flex; gap:8px; flex-wrap:wrap}
+.badge{background:#ecfeff; color:#155e75; border:1px solid #a5f3fc; border-radius:999px; padding:.2em .6em; font-weight:800}
+.top-right{margin-left:auto; display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+.avatar-pill{display:flex; align-items:center; gap:8px; background:#ffffff; border:1px solid #e2e8f0; border-radius:999px; padding:2px 10px; box-shadow:0 6px 16px #00000010}
+.avatar-emoji{font-size:28px; line-height:1}
+.coin-pill,.tts-pill{display:flex; align-items:center; gap:6px; background:#fff; border:1px solid #e2e8f0; border-radius:999px; padding:2px 10px; box-shadow:0 6px 16px #00000010}
+.coin{font-size:18px}
+
+.wrap{max-width:1100px; margin:0 auto; padding:16px var(--gutter)}
+.panel{
+  background:linear-gradient(180deg, var(--glass), #fff);
+  border:1px solid #e2e8f0; border-radius:var(--rad);
+  box-shadow:var(--shadow); padding:22px;
+  position:relative; overflow:hidden;
+}
+.grid{display:grid; gap:22px}
+.grid.two{grid-template-columns:1fr 1fr}
+@media (max-width:980px){.grid.two{grid-template-columns:1fr}}
+
+input,select{
+  width:100%; font-size:1rem;
+  padding:.7em .85em; border-radius:12px; border:1px solid #cbd5e1; background:#fff;
+}
+input:focus, select:focus{outline:2px solid #a78bfa55; border-color:#a78bfa; box-shadow:0 0 0 4px #a78bfa22}
+
+.avatar{display:grid; grid-template-columns:repeat(auto-fit, minmax(110px, 1fr)); gap:18px}
+.avatar input{display:none}
+.tile{display:flex; align-items:center; justify-content:center; aspect-ratio:1/1; font-size:80px; background:#fff; border:2px solid #e5e7eb; border-radius:18px; box-shadow:0 10px 22px #00000014; transition:.12s transform,.12s box-shadow,.12s border-color; user-select:none}
+.tile:hover{transform:translateY(-2px); box-shadow:0 16px 32px #00000018}
+.avatar input:checked + .tile{border-color:var(--pri); box-shadow:0 0 0 4px #7c3aed22, 0 16px 34px #00000018}
+
+.stage{position:relative; overflow:hidden; border-radius:var(--rad); box-shadow:var(--shadow); background:#fff; border:1px solid #e2e8f0}
+.stage-head{display:flex; align-items:center; gap:10px; padding:12px 14px; background:linear-gradient(90deg, #ffffffaa, #eef2ffaa); border-bottom:1px solid #e2e8f0; flex-wrap:wrap; row-gap:8px}
+.domainChip{display:inline-flex;align-items:center;gap:.5em;padding:.35em .8em;border-radius:999px;font-weight:800}
+.progress{height:8px; background:#e2e8f0; border-radius:8px; overflow:hidden}
+.progress>div{height:100%; background:linear-gradient(90deg, var(--pri), var(--sec)); width:0%}
+.qwrap{padding:18px; animation:fade .2s ease}
+@keyframes fade{from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:translateY(0)}}
+.parallax{position:absolute; inset:0; pointer-events:none; overflow:hidden}
+.picon{position:absolute; font-size:48px; opacity:.25; animation:drift 10s linear infinite}
+@keyframes drift{0%{transform:translateY(0)}100%{transform:translateY(-10px)}}
+
+.qtext{font-weight:800; font-size:1.24rem; margin:.2em 0}
+.answers{display:grid; gap:10px; margin-top:8px}
+.answers label{display:flex; align-items:center; justify-content:space-between; gap:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:.7em .85em; cursor:pointer; transition:.12s transform,.12s box-shadow}
+.answers label:hover{transform:translateY(-1px); box-shadow:0 10px 20px #00000010}
+.answers input{appearance:none; width:18px; height:18px; border:2px solid #93c5fd; border-radius:50%; position:relative}
+.answers input:checked{background:#93c5fd}
+.answers input:checked::after{content:""; position:absolute; inset:4px; border-radius:50%; background:#fff}
+
+.mini{margin-top:12px; border:1px dashed #e5e7eb; border-radius:14px; padding:12px; background:#ffffffaa}
+.flex{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+
+.rescard{display:grid; gap:18px; grid-template-columns:1.2fr 1fr}
+@media (max-width:900px){.rescard{grid-template-columns:1fr}}
+.badge{background:#ecfeff; color:#155e75; border:1px solid #a5f3fc; border-radius:999px; padding:.2em .6em; font-weight:800}
+
+.footer{position:sticky; bottom:0; z-index:40; margin-top:12px; backdrop-filter:blur(10px); background:#ffffffcc; border-top:1px solid #e2e8f0}
+.footer-inner{max-width:1100px; margin:0 auto; padding:10px var(--gutter); display:flex; gap:10px; align-items:center}
+.btn{background:linear-gradient(90deg, var(--pri), var(--sec)); color:#fff; border:0; border-radius:12px; padding:.75em 1.1em; font-weight:900; cursor:pointer; box-shadow:0 10px 24px #7c3aed2a; transition:.12s transform}
+.btn:hover{transform:translateY(-1px)}
+.ghost{background:#fff; color:#000; border:1px solid #e2e8f0}
+
+#confetti{position:fixed; inset:0; pointer-events:none}
+.coin-float{position:fixed; font-size:24px; pointer-events:none; animation:coinUp .8s ease forwards}
+@keyframes coinUp{0%{transform:translateY(0) scale(.9); opacity:.9}100%{transform:translateY(-40px) scale(1.1); opacity:0}}
+
+h1{font-family:'Fredoka','Quicksand'; color:var(--pri); font-size:2rem; margin:.2em 0}
+.sub{color:#0ea5e9; font-weight:800}
+.small{color:#64748b; font-size:.95rem}
+.hidden{display:none}
+
+#intro .actions{display:flex; gap:12px; align-items:center; justify-content:flex-start; flex-wrap:wrap; margin-top:6px}
+#intro .actions .right{ margin-left:auto; display:flex; align-items:center; gap:8px }
+</style>
+</head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div>
+<canvas id="confetti"></canvas>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand" data-i18n="brand">🧠 How I Learn Best</div>
+    <div class="badges">
+      <span class="badge" data-i18n="badge1">Gardner-aligned</span>
+      <span class="badge" data-i18n="badge2">Age-adaptive</span>
+      <span class="badge" data-i18n="badge3">Save-ready</span>
+    </div>
+    <div class="top-right">
+      <div class="avatar-pill"><span class="avatar-emoji" id="avatarEmoji">🦊</span><span class="small" id="avatarName"></span></div>
+      <div class="coin-pill"><span class="coin">🪙</span><b id="coinsTop">0</b></div>
+      <div class="tts-pill">
+        <button id="ttsToggle" class="btn ghost" style="padding:.45em .7em;font-weight:800">🔊 <span id="ttsLabel">Read Aloud</span></button>
+        <button id="ttsReplay" class="btn ghost" title="Replay" style="padding:.45em .7em">⟲</button>
+      </div>
+      <div class="small" data-i18n="hintKeys">Keys 1–4 to answer</div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- Intro -->
+  <section id="intro" class="grid two">
+    <div class="panel">
+      <h1 data-i18n="pickStyle">Pick your style</h1>
+      <div class="sub" data-i18n="bigAvatars">Big avatars, smooth vibes</div>
+      <div class="avatar" id="avatarWrap"></div>
+    </div>
+
+    <div class="panel">
+      <h1 data-i18n="getReady">Get ready</h1>
+      <div class="grid" style="gap:18px">
+        <div class="grid two" style="gap:18px">
+          <div>
+            <span class="small" data-i18n="nameLabel">Name</span>
+            <input id="name" placeholder="Type your name" autocomplete="name" data-i18n-placeholder="namePH"/>
+          </div>
+          <div>
+            <span class="small" data-i18n="ageLabel">Age (5–16)</span>
+            <input id="age" type="number" min="5" max="16" placeholder="7"/>
+          </div>
+        </div>
+        <div class="grid two" style="gap:18px">
+          <div>
+            <span class="small" data-i18n="depthLabel">Depth</span>
+            <select id="depth">
+              <option value="24" data-i18n="quick">Quick (24Q)</option>
+              <option value="40" data-i18n="standard" selected>Standard (40Q)</option>
+              <option value="64" data-i18n="deep">Deep (64Q)</option>
+            </select>
+          </div>
+          <div>
+            <span class="small" data-i18n="langLabel">Language</span>
+            <select id="lang">
+              <option value="en">English</option>
+              <option value="zh">简体中文</option>
+              <option value="es">Español</option>
+              <option value="fr">Français</option>
+            </select>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn" id="startBtn" data-i18n="start">Let’s Go! 🚀</button>
+          <button class="btn ghost" id="resumeBtn" data-i18n="resume">Resume</button>
+          <label class="small right"><input type="checkbox" id="teacherView"> <span data-i18n="teacherView">Teacher view</span></label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stage -->
+  <section id="stage" class="stage hidden">
+    <div class="parallax" id="parallax"></div>
+    <div class="stage-head">
+      <div id="chip" class="domainChip">📚 Linguistic</div>
+      <div id="qcount" class="small">1/40</div>
+      <div style="flex:1; margin:0 10px"><div class="progress"><div id="bar"></div></div></div>
+      <div class="avatar-pill"><span class="avatar-emoji" id="avatarEmojiStage">🦊</span><span class="small" id="avatarNameStage"></span></div>
+      <div class="coin-pill"><span class="coin">🪙</span><b id="coins">0</b></div>
+    </div>
+    <div class="qwrap" id="qwrap">
+      <div class="qtext" id="qtext">…</div>
+      <fieldset class="answers" id="answers"></fieldset>
+      <div id="mini" class="mini hidden"></div>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section id="results" class="panel hidden">
+    <h1 data-i18n="greatJob">🎉 Great job!</h1>
+    <div class="flex" style="gap:12px; align-items:center">
+      <div class="avatar-pill"><span class="avatar-emoji" id="avatarEmojiRes">🦊</span><span class="small" id="avatarNameRes"></span></div>
+      <div class="coin-pill"><span class="coin">🪙</span><b id="coinsRes">0</b></div>
+    </div>
+    <div class="small" id="summary" style="margin-top:6px"></div>
+    <div class="rescard" style="margin-top:6px">
+      <div class="panel"><canvas id="radar"></canvas></div>
+      <div>
+        <div><b data-i18n="topStrengths">Top strengths</b></div>
+        <ol id="topList" style="margin-top:.4em"></ol>
+        <div class="small" id="quality"></div>
+        <div class="small" id="teacherStats"></div>
+      </div>
+    </div>
+    <div style="margin-top:10px"><b data-i18n="missionsTitle">First missions</b></div>
+    <div class="badges" id="missions"></div>
+    <div class="flex" style="margin-top:10px">
+      <button class="btn" id="printBtn" data-i18n="print">🖨️ Print / PDF</button>
+      <button class="btn" id="csvBtn" data-i18n="csv">📄 Export CSV</button>
+      <button class="btn" id="jsonBtn" data-i18n="json">🧩 Export JSON</button>
+      <button class="btn ghost" id="restartBtn" data-i18n="restart">🔁 Restart</button>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="small" id="hint" data-i18n="hintText">Pick the answer that fits you best. No right or wrong!</div>
+    <div style="margin-left:auto" class="flex">
+      <button class="btn ghost" id="backBtn" data-i18n="back">⬅️ Back</button>
+      <button class="btn ghost" id="skipBtn"><span data-i18n="skip">🎟️ Skip</span> (<span id="skips">3</span>)</button>
+      <button class="btn" id="saveBtn" data-i18n="save">💾 Save</button>
+      <button class="btn" id="nextBtn" data-i18n="next">Next ➡️</button>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ================= I18N ================= */
+const I18N = {
+  en:{ brand:"🧠 How I Learn Best", badge1:"Gardner-aligned", badge2:"Age-adaptive", badge3:"Save-ready",
+    hintKeys:"Keys 1–4 to answer", pickStyle:"Pick your style", bigAvatars:"Big avatars, smooth vibes",
+    getReady:"Get ready", nameLabel:"Name", namePH:"Type your name", ageLabel:"Age (5–16)",
+    depthLabel:"Depth", langLabel:"Language", quick:"Quick (24Q)", standard:"Standard (40Q)", deep:"Deep (64Q)",
+    start:"Let’s Go! 🚀", resume:"Resume", teacherView:"Teacher view",
+    greatJob:"🎉 Great job!", topStrengths:"Top strengths", missionsTitle:"First missions",
+    print:"🖨️ Print / PDF", csv:"📄 Export CSV", json:"🧩 Export JSON", restart:"🔁 Restart",
+    hintText:"Pick the answer that fits you best. No right or wrong!",
+    back:"⬅️ Back", skip:"🎟️ Skip", save:"💾 Save", next:"Next ➡️",
+    choices:["😀 Very true","🙂 A bit true","😐 Not sure","🙃 Not me"],
+    domains:{ "Linguistic":"Linguistic","Logical-Mathematical":"Logical-Mathematical","Musical":"Musical","Spatial-Visual":"Spatial-Visual","Bodily-Kinesthetic":"Bodily-Kinesthetic","Interpersonal":"Interpersonal","Intrapersonal":"Intrapersonal","Naturalistic":"Naturalistic" },
+    resultsLine:(n)=>`${n}, here’s your learning profile (Gardner’s 8 intelligences).`,
+    ttsOn:"Speaking…", ttsOff:"Read Aloud"
+  },
+  zh:{ brand:"🧠 我怎样学得最好", badge1:"加德纳理论", badge2:"按年龄适配", badge3:"可保存",
+    hintKeys:"按键 1–4 选择答案", pickStyle:"选择你的形象", bigAvatars:"大头像，更好玩",
+    getReady:"准备开始", nameLabel:"名字", namePH:"请输入名字", ageLabel:"年龄（5–16）",
+    depthLabel:"深度", langLabel:"语言", quick:"快速（24题）", standard:"标准（40题）", deep:"深入（64题）",
+    start:"开始！🚀", resume:"继续", teacherView:"教师视图",
+    greatJob:"🎉 干得好！", topStrengths:"优势排行", missionsTitle:"第一次小任务",
+    print:"🖨️ 打印 / PDF", csv:"📄 导出 CSV", json:"🧩 导出 JSON", restart:"🔁 重新开始",
+    hintText:"选最符合你的答案，没有对错。",
+    back:"⬅️ 返回", skip:"🎟️ 跳过", save:"💾 保存", next:"下一题 ➡️",
+    choices:["😀 很像我","🙂 有点像","😐 不确定","🙃 不像我"],
+    domains:{ "Linguistic":"语言智能","Logical-Mathematical":"逻辑-数学智能","Musical":"音乐智能","Spatial-Visual":"空间-视觉智能","Bodily-Kinesthetic":"身体-动觉智能","Interpersonal":"人际智能","Intrapersonal":"自知智能","Naturalistic":"自然观察智能" },
+    resultsLine:(n)=>`${n}，这是你的学习画像（加德纳八大智能）。`,
+    ttsOn:"正在朗读…", ttsOff:"朗读"
+  },
+  es:{ brand:"🧠 Cómo aprendo mejor", badge1:"Alineado con Gardner", badge2:"Adaptado por edad", badge3:"Se puede guardar",
+    hintKeys:"Teclas 1–4 para responder", pickStyle:"Elige tu estilo", bigAvatars:"Avatares grandes, fluidez",
+    getReady:"Prepárate", nameLabel:"Nombre", namePH:"Escribe tu nombre", ageLabel:"Edad (5–16)",
+    depthLabel:"Profundidad", langLabel:"Idioma", quick:"Rápido (24)", standard:"Estándar (40)", deep:"Profundo (64)",
+    start:"¡Vamos! 🚀", resume:"Reanudar", teacherView:"Vista docente",
+    greatJob:"🎉 ¡Buen trabajo!", topStrengths:"Fortalezas principales", missionsTitle:"Primeras misiones",
+    print:"🖨️ Imprimir / PDF", csv:"📄 Exportar CSV", json:"🧩 Exportar JSON", restart:"🔁 Reiniciar",
+    hintText:"Elige lo que más te define. ¡No hay correcto o incorrecto!",
+    back:"⬅️ Atrás", skip:"🎟️ Saltar", save:"💾 Guardar", next:"Siguiente ➡️",
+    choices:["😀 Muy cierto","🙂 Un poco cierto","😐 No seguro","🙃 No me describe"],
+    domains:{ "Linguistic":"Lingüística","Logical-Mathematical":"Lógico-matemática","Musical":"Musical","Spatial-Visual":"Espacial-visual","Bodily-Kinesthetic":"Corporal-cinestésica","Interpersonal":"Interpersonal","Intrapersonal":"Intrapersonal","Naturalistic":"Naturalista" },
+    resultsLine:(n)=>`${n}, este es tu perfil de aprendizaje (ocho inteligencias de Gardner).`,
+    ttsOn:"Hablando…", ttsOff:"Leer en voz alta"
+  },
+  fr:{ brand:"🧠 Comment j’apprends le mieux", badge1:"Aligné Gardner", badge2:"Adapté à l’âge", badge3:"Sauvegarde",
+    hintKeys:"Touches 1–4 pour répondre", pickStyle:"Choisis ton style", bigAvatars:"Grands avatars, fluide",
+    getReady:"On se prépare", nameLabel:"Prénom", namePH:"Écris ton prénom", ageLabel:"Âge (5–16)",
+    depthLabel:"Niveau", langLabel:"Langue", quick:"Rapide (24)", standard:"Standard (40)", deep:"Approfondi (64)",
+    start:"C’est parti ! 🚀", resume:"Reprendre", teacherView:"Vue enseignant",
+    greatJob:"🎉 Bravo !", topStrengths:"Forces principales", missionsTitle:"Premières missions",
+    print:"🖨️ Imprimer / PDF", csv:"📄 Exporter CSV", json:"🧩 Exporter JSON", restart:"🔁 Recommencer",
+    hintText:"Choisis ce qui te ressemble le plus. Pas de bonne ou mauvaise réponse !",
+    back:"⬅️ Retour", skip:"🎟️ Passer", save:"💾 Sauver", next:"Suivant ➡️",
+    choices:["😀 Très vrai","🙂 Un peu vrai","😐 Pas sûr","🙃 Ce n’est pas moi"],
+    domains:{ "Linguistic":"Linguistique","Logical-Mathematical":"Logique-mathématique","Musical":"Musicale","Spatial-Visual":"Spatiale-visuelle","Bodily-Kinesthetic":"Corporelle-kinesthésique","Interpersonal":"Interpersonnelle","Intrapersonal":"Intrapersonnelle","Naturalistic":"Naturaliste" },
+    resultsLine:(n)=>`${n}, voici ton profil d’apprentissage (huit intelligences de Gardner).`,
+    ttsOn:"Lecture…", ttsOff:"Lire à voix haute"
+  }
+};
+
+/* ================= Item BANKS (8 per domain per age band) ================= */
+const BANKS = {
+  en: {
+    YOUNG:{
+      "Linguistic":["I like telling funny stories.","I enjoy new words and rhymes.","I remember lines from books.","I like writing small notes.","I like word games like rhymes.","I explain things in my own words.","I like friendly talks about ideas.","I keep a little diary or list."],
+      "Logical-Mathematical":["I enjoy number puzzles.","I sort things by size or color.","I fix problems one step at a time.","I spot simple patterns fast.","I make a plan before I start.","I like simple strategy games.","I break big jobs into small jobs.","I check my work carefully."],
+      "Musical":["I clap to the beat.","Songs help me remember.","I hear small changes in music.","I make up little tunes.","I pick music to match my mood.","I like trying instruments or apps.","I like quiet music when I work.","I can copy a rhythm I hear."],
+      "Spatial-Visual":["I like building with blocks or LEGO.","I draw from my imagination.","I enjoy jigsaw puzzles.","I can read simple maps or signs.","I picture things turning around.","I make quick drawings to explain.","I like making posters or signs.","I enjoy crafts and models."],
+      "Bodily-Kinesthetic":["I learn best when I can move.","I like acting things out.","I enjoy making things with my hands.","I like sports or dancing.","I use my hands when I talk.","I focus better after I move.","I like simple science labs.","I practice to get better at skills."],
+      "Interpersonal":["I like helping friends.","I enjoy team games.","I notice when someone needs help.","I can tell how a friend feels.","I like being a helper or leader.","I learn by telling a friend what I know.","I can solve small fights kindly.","I like helping younger kids."],
+      "Intrapersonal":["I know what I am good at.","I like quiet time to think.","I set small goals for myself.","I notice when my feelings change.","I plan my study time.","I think about what worked well.","I pick ways to learn that fit me.","I keep trying when it is hard."],
+      "Naturalistic":["I enjoy animals or plants.","I like being outside.","I collect rocks, leaves, or shells.","I notice small changes in weather.","I group nature things that are alike.","I like drawing nature.","I learn about habitats.","I care for a pet or plant."]
+    },
+    OLDER:{
+      "Linguistic":["I like telling stories or jokes to friends.","I enjoy learning new words and rhymes.","I can remember lines from books or movies.","I like writing notes, poems, or captions.","I enjoy playing with word puzzles or riddles.","I can explain ideas clearly to others.","I enjoy debates and persuasive speaking.","I keep a journal or diary about my thoughts."],
+      "Logical-Mathematical":["I enjoy number puzzles and brainteasers.","I sort or group things to make sense of them.","I fix problems step by step.","I spot patterns or rules quickly.","I plan before I start a task.","I like strategy or logic games.","I break big problems into smaller parts.","I check my work carefully and logically."],
+      "Musical":["I clap or tap to the beat without thinking.","Songs help me remember facts or steps.","I notice small changes in melodies.","I make up little tunes or rhythms.","I can match music to a mood or scene.","I enjoy playing with instruments or apps.","I like background music while I work.","I can repeat a rhythm I hear."],
+      "Spatial-Visual":["I enjoy building models, blocks, or LEGO.","I draw from imagination or memory.","I’m good at jigsaw puzzles or tangrams.","I can read maps and follow diagrams.","I imagine how things look when rotated.","I sketch quick diagrams to explain ideas.","I design posters, slides, or graphics.","I enjoy 3D design, crafts, or architecture."],
+      "Bodily-Kinesthetic":["I learn best when I can move around.","I like acting things out or role-playing.","I enjoy crafts, making, or building by hand.","I like sports, dance, or movement breaks.","I use gestures when I explain things.","I focus better after a short movement.","I like labs, prototyping, or hands-on tasks.","I practice physical skills to get better."],
+      "Interpersonal":["I like helping friends and classmates.","I enjoy team games or group projects.","I notice when someone needs help.","I can tell how others feel from their faces.","I like being a leader or organizer.","I learn by explaining ideas to a partner.","I resolve conflicts calmly and fairly.","I mentor or support younger students."],
+      "Intrapersonal":["I know what I’m good at and what’s hard for me.","I like quiet time to think by myself.","I set small goals and track my progress.","I notice when my feelings change.","I plan my study time to fit my style.","I reflect on what worked and what didn’t.","I choose strategies that match who I am.","I stay calm and keep trying when it’s hard."],
+      "Naturalistic":["I enjoy animals, plants, or caring for nature.","I like being outdoors and exploring.","I collect or sort natural objects.","I notice small changes in weather or seasons.","I group things in nature by how they’re alike.","I like nature sketches or photos.","I research ecosystems or habitats.","I care for pets or plants regularly."]
+    }
+  },
+  zh:{
+    YOUNG:{
+      "Linguistic":["我喜欢讲有趣的故事。","我喜欢新词和押韵。","我能记住书里的句子。","我爱写小便条。","我喜欢玩押韵的文字游戏。","我会用自己的话解释事情。","我喜欢轻松聊天分享想法。","我会记小日记或清单。"],
+      "Logical-Mathematical":["我喜欢数字谜题。","我会把东西按大小或颜色分类。","我一步一步地解决问题。","我很快看出简单的规律。","开始前我会先想好计划。","我喜欢简单的策略游戏。","我把大任务分成小任务。","我会仔细检查作业。"],
+      "Musical":["我会跟着节奏拍手。","歌曲能帮我记住东西。","我能听出音乐里的小变化。","我会编小曲子。","我会选和心情匹配的音乐。","我喜欢试乐器或音乐应用。","我学习时喜欢轻音乐。","我能模仿听到的节奏。"],
+      "Spatial-Visual":["我喜欢用积木/乐高搭建。","我会画想象中的东西。","我喜欢拼图。","我会看简单地图或标志。","我会在脑中转动物体。","我会画小图来说明。","我喜欢做海报或牌子。","我喜欢手工和模型。"],
+      "Bodily-Kinesthetic":["我动起来学得最好。","我喜欢表演情景。","我喜欢用手做东西。","我喜欢运动或跳舞。","我说话时会用手势。","活动一下我更专注。","我喜欢简单的科学小实验。","我会练习让自己更熟练。"],
+      "Interpersonal":["我喜欢帮助同学。","我喜欢团队游戏。","我会注意谁需要帮助。","我能看出朋友的心情。","我喜欢做小助手或小队长。","我把会的讲给同学听就能学会。","我会友好地解决小矛盾。","我喜欢照顾小一点的孩子。"],
+      "Intrapersonal":["我知道自己擅长什么。","我喜欢安静地想一想。","我会给自己定小目标。","我注意到自己情绪的变化。","我会安排学习时间。","我会想想什么方法有效。","我会选适合自己的学习方法。","遇到难题我会坚持。"],
+      "Naturalistic":["我喜欢动物或植物。","我喜欢到户外。","我会收集石头、树叶或贝壳。","我注意天气的小变化。","我会把相似的自然物分到一组。","我喜欢画自然景物。","我会了解栖息地。","我会照顾宠物或植物。"]
+    },
+    OLDER:{
+      "Linguistic":["我喜欢给朋友讲故事或笑话。","我喜欢学新词和押韵。","我能记住书或电影里的台词。","我喜欢写便条、诗或说明。","我喜欢文字谜题或脑筋急转弯。","我能清楚地解释想法。","我喜欢辩论或劝说性的表达。","我会写日记记录想法。"],
+      "Logical-Mathematical":["我喜欢数字谜题和益智题。","我会把东西分类来理解。","我按步骤解决问题。","我很快发现规律或规则。","我做事前会先计划。","我喜欢策略或逻辑游戏。","我把大问题拆成小问题。","我会有逻辑地检查作业。"],
+      "Musical":["我会不自觉地跟着节拍打拍。","歌曲能帮我记步骤或知识。","我能听出旋律里的小变化。","我会编小旋律或节奏。","我能把音乐和场景/心情配对。","我喜欢玩乐器或音乐应用。","我学习时喜欢有背景音乐。","我能重复刚听到的节奏。"],
+      "Spatial-Visual":["我喜欢做模型、积木或乐高。","我会凭想象或记忆画画。","我擅长拼图或七巧板。","我会看地图和图示。","我能想象物体旋转后的样子。","我会画小图来说明思路。","我会设计海报、幻灯片或图形。","我喜欢3D设计、手工或建筑。"],
+      "Bodily-Kinesthetic":["我动起来时学得最好。","我喜欢角色扮演或情景表演。","我喜欢手工、制作或动手建造。","我喜欢运动、舞蹈或短暂活动。","我解释时会用手势。","活动一下后我更专注。","我喜欢实验、原型或动手任务。","我通过练习提高身体技能。"],
+      "Interpersonal":["我喜欢帮助朋友和同学。","我喜欢团队游戏或小组项目。","我会注意谁需要帮助。","我能从表情看出别人感受。","我喜欢做组织者或带头人。","和同伴互相讲解让我学得更好。","我能冷静公平地解决冲突。","我会帮助年纪更小的同学。"],
+      "Intrapersonal":["我知道自己的强项与难点。","我喜欢独处思考。","我会设定并跟踪小目标。","我注意到情绪何时变化。","我会安排学习时间，符合我的方式。","我会反思哪些方法有效。","我选择适合自己的策略。","遇到困难我能保持冷静并坚持。"],
+      "Naturalistic":["我喜欢动物、植物或关爱自然。","我喜欢在户外探究。","我会收集或分类自然物。","我注意到天气或季节的小变化。","我会按相似点给自然物分组。","我喜欢写生/拍照自然。","我会研究生态系统或栖息地。","我会定期照顾宠物或植物。"]
+    }
+  },
+  es:{
+    YOUNG:{
+      "Linguistic":["Me gusta contar historias divertidas.","Me gustan las palabras nuevas y las rimas.","Recuerdo frases de los libros.","Me gusta escribir notitas.","Me gustan los juegos con rimas.","Explico cosas con mis propias palabras.","Me gusta charlar ideas con amigos.","Llevo un pequeño diario o lista."],
+      "Logical-Mathematical":["Me gustan los acertijos de números.","Ordeno cosas por tamaño o color.","Resuelvo paso a paso.","Veo patrones simples rápido.","Hago un plan antes de empezar.","Me gustan juegos de estrategia simples.","Divido tareas grandes en pequeñas.","Reviso mi trabajo con cuidado."],
+      "Musical":["Aplaudo con el ritmo.","Las canciones me ayudan a recordar.","Oigo cambios pequeños en la música.","Invento pequeñas melodías.","Elijo música según mi ánimo.","Me gusta probar instrumentos o apps.","Prefiero música suave al trabajar.","Puedo copiar un ritmo que oigo."],
+      "Spatial-Visual":["Me gusta construir con bloques o LEGO.","Dibujo de mi imaginación.","Me gustan los rompecabezas.","Leo mapas o señales simples.","Imagino cosas girando.","Hago dibujitos para explicar.","Hago carteles o letreros.","Me gustan las manualidades y maquetas."],
+      "Bodily-Kinesthetic":["Aprendo mejor cuando me muevo.","Me gusta representar cosas.","Disfruto hacer cosas con mis manos.","Me gustan los deportes o bailar.","Uso gestos al explicar.","Me concentro mejor tras moverme.","Me gustan pequeños experimentos.","Practico para hacerlo mejor."],
+      "Interpersonal":["Me gusta ayudar a mis amigos.","Disfruto juegos en equipo.","Veo cuándo alguien necesita ayuda.","Puedo notar cómo se siente un amigo.","Me gusta ser ayudante o líder.","Aprendo explicando a un amigo.","Resuelvo peleas pequeñas con calma.","Me gusta ayudar a niños más chicos."],
+      "Intrapersonal":["Sé en qué soy bueno.","Me gusta pensar en silencio.","Me pongo metas pequeñas.","Noto cambios en mis emociones.","Organizo mi tiempo de estudio.","Pienso qué me funcionó.","Elijo maneras que me quedan bien.","Sigo intentando aunque sea difícil."],
+      "Naturalistic":["Me gustan los animales o plantas.","Me gusta estar afuera.","Colecciono piedras, hojas o conchas.","Noto cambios en el clima.","Agrupo cosas de la naturaleza por parecido.","Me gusta dibujar la naturaleza.","Aprendo sobre hábitats.","Cuido una mascota o planta."]
+    },
+    OLDER:{
+      "Linguistic":["Me gusta contar historias o chistes.","Disfruto aprender palabras y rimas nuevas.","Recuerdo frases de libros o películas.","Me gusta escribir notas, poemas o pies de foto.","Me gustan los juegos de palabras o acertijos.","Puedo explicar ideas con claridad.","Disfruto los debates y convencer a otros.","Llevo un diario con mis ideas."],
+      "Logical-Mathematical":["Me gustan los acertijos y rompecabezas numéricos.","Ordeno o agrupo cosas para entenderlas.","Resuelvo problemas paso a paso.","Veo patrones o reglas rápidamente.","Planifico antes de comenzar.","Me gustan juegos de estrategia o lógica.","Divido problemas grandes en partes pequeñas.","Reviso mi trabajo con lógica y cuidado."],
+      "Musical":["Aplaudo o doy golpecitos al ritmo sin pensarlo.","Las canciones me ayudan a recordar.","Noto cambios pequeños en melodías.","Creo pequeñas melodías o ritmos.","Puedo elegir música para un ánimo o escena.","Disfruto tocar instrumentos o apps.","Me gusta música de fondo al trabajar.","Repito un ritmo que escucho."],
+      "Spatial-Visual":["Disfruto construir modelos o LEGO.","Dibujo de imaginación o memoria.","Soy bueno con rompecabezas o tangram.","Leo mapas y sigo diagramas.","Imagino objetos girando.","Hago esquemas rápidos para explicar.","Diseño carteles, diapositivas o gráficos.","Disfruto diseño 3D, manualidades o arquitectura."],
+      "Bodily-Kinesthetic":["Aprendo mejor moviéndome.","Me gusta actuar o representar roles.","Me gustan las manualidades o construir.","Me gustan los deportes, baile o pausas activas.","Uso gestos al explicar.","Me concentro mejor tras moverme un poco.","Me gustan laboratorios o tareas prácticas.","Mejoro habilidades físicas con práctica."],
+      "Interpersonal":["Me gusta ayudar a amigos y compañeros.","Disfruto proyectos en equipo.","Veo cuándo alguien necesita ayuda.","Puedo leer emociones por la cara.","Me gusta liderar u organizar.","Aprendo explicando a un compañero.","Resuelvo conflictos con calma y justicia.","Apoyo a estudiantes más jóvenes."],
+      "Intrapersonal":["Sé en qué soy bueno y qué me cuesta.","Me gusta pensar a solas.","Pongo metas pequeñas y las sigo.","Noto cuando cambian mis emociones.","Organizo mi estudio a mi manera.","Reflexiono sobre lo que funcionó.","Elijo estrategias que van conmigo.","Sigo calmado y persistente cuando es difícil."],
+      "Naturalistic":["Disfruto animales, plantas o cuidar la naturaleza.","Me gusta explorar al aire libre.","Colecciono u ordeno objetos naturales.","Noto cambios en el clima o estaciones.","Agrupo cosas de la naturaleza por similitud.","Me gusta dibujar o fotografiar la naturaleza.","Investigo ecosistemas o hábitats.","Cuido mascotas o plantas con regularidad."]
+    }
+  },
+  fr:{
+    YOUNG:{
+      "Linguistic":["J’aime raconter des histoires drôles.","J’aime les nouveaux mots et les rimes.","Je retiens des phrases de livres.","J’aime écrire de petits mots.","J’aime les jeux de rimes.","J’explique avec mes propres mots.","J’aime parler d’idées avec des amis.","Je tiens un petit journal ou une liste."],
+      "Logical-Mathematical":["J’aime les puzzles de nombres.","Je trie par taille ou couleur.","Je résous étape par étape.","Je vois vite les petits motifs.","Je fais un plan avant de commencer.","J’aime les jeux de stratégie simples.","Je coupe un grand travail en petits.","Je vérifie mon travail avec soin."],
+      "Musical":["Je tape des mains sur le rythme.","Les chansons m’aident à retenir.","J’entends de petits changements dans la musique.","J’invente de petites mélodies.","Je choisis une musique selon mon humeur.","J’aime essayer des instruments ou applis.","J’aime une musique douce pour travailler.","Je peux copier un rythme entendu."],
+      "Spatial-Visual":["J’aime construire avec des blocs/LEGO.","Je dessine d’imagination.","J’aime les puzzles.","Je lis des cartes ou panneaux simples.","J’imagine les objets qui tournent.","Je fais de petits croquis pour expliquer.","J’aime faire des affiches.","J’aime les bricolages et maquettes."],
+      "Bodily-Kinesthetic":["J’apprends mieux en bougeant.","J’aime jouer des scènes.","J’aime fabriquer avec mes mains.","J’aime le sport ou la danse.","J’utilise des gestes pour expliquer.","Après avoir bougé je me concentre mieux.","J’aime les petites expériences.","Je m’exerce pour m’améliorer."],
+      "Interpersonal":["J’aime aider mes amis.","J’aime les jeux d’équipe.","Je vois quand quelqu’un a besoin d’aide.","Je devine comment se sent un ami.","J’aime être aide ou chef d’équipe.","J’apprends en expliquant à un ami.","Je règle les petits conflits gentiment.","J’aime aider les plus jeunes."],
+      "Intrapersonal":["Je sais ce que je fais bien.","J’aime penser au calme.","Je me fixe de petits buts.","Je remarque mes changements d’humeur.","J’organise mon temps d’étude.","Je pense à ce qui a marché.","Je choisis des façons de travailler qui me vont.","Je persévère quand c’est difficile."],
+      "Naturalistic":["J’aime les animaux ou les plantes.","J’aime être dehors.","Je collectionne des cailloux, feuilles ou coquillages.","Je remarque de petits changements de météo.","Je groupe les choses de nature qui se ressemblent.","J’aime dessiner la nature.","J’apprends les habitats.","Je m’occupe d’un animal ou d’une plante."]
+    },
+    OLDER:{
+      "Linguistic":["J’aime raconter des histoires ou blagues.","J’aime apprendre de nouveaux mots et rimes.","Je me souviens de répliques de livres/films.","J’aime écrire notes, poèmes ou légendes.","J’aime les jeux de mots et énigmes.","J’explique clairement des idées.","J’aime débattre et convaincre.","Je tiens un journal de mes idées."],
+      "Logical-Mathematical":["J’aime les énigmes et casse-têtes numériques.","Je regroupe des choses pour mieux comprendre.","Je résous les problèmes étape par étape.","Je repère vite des motifs ou règles.","Je planifie avant de commencer.","J’aime les jeux de stratégie/logique.","Je divise un gros problème en parties.","Je vérifie mon travail avec logique."],
+      "Musical":["Je tape ou claque en rythme sans y penser.","Les chansons m’aident à mémoriser.","Je note de petits changements de mélodie.","J’invente de petites mélodies/rythmes.","J’associe une musique à une ambiance.","J’aime jouer d’un instrument ou d’applis.","J’aime une musique de fond pour travailler.","Je peux répéter un rythme entendu."],
+      "Spatial-Visual":["J’aime construire des modèles ou LEGO.","Je dessine d’imagination ou mémoire.","Je suis bon aux puzzles/tangrams.","Je lis des cartes et suis des schémas.","J’imagine des objets tournés.","Je fais des schémas rapides pour expliquer.","Je conçois affiches, diapos, graphiques.","J’aime le design 3D, le bricolage, l’architecture."],
+      "Bodily-Kinesthetic":["J’apprends mieux en bougeant.","J’aime le jeu de rôle.","J’aime fabriquer/construire à la main.","J’aime sport, danse ou pauses actives.","J’utilise des gestes pour expliquer.","Je me concentre mieux après avoir bougé.","J’aime les ateliers, prototypages, tâches pratiques.","J’améliore mes gestes par la pratique."],
+      "Interpersonal":["J’aime aider amis et camarades.","J’aime les projets d’équipe.","Je remarque qui a besoin d’aide.","Je lis les émotions sur les visages.","J’aime être leader/organisateur.","J’apprends en expliquant à un partenaire.","Je règle les conflits avec calme et justice.","J’accompagne des élèves plus jeunes."],
+      "Intrapersonal":["Je sais mes forces et mes difficultés.","J’aime réfléchir seul.","Je fixe de petits objectifs et les suis.","Je remarque quand mes émotions changent.","J’organise mon étude selon mon style.","Je réfléchis à ce qui marche ou non.","Je choisis des stratégies qui me conviennent.","Je reste calme et persévérant quand c’est dur."],
+      "Naturalistic":["J’aime les animaux/plantes et prendre soin de la nature.","J’aime explorer dehors.","Je collectionne/ordonne des objets naturels.","Je remarque des changements météo/saisons.","Je regroupe par ressemblances dans la nature.","J’aime croquis/photos de nature.","J’étudie écosystèmes/habitats.","Je m’occupe régulièrement d’animaux/plantes."]
+    }
+  }
+};
+
+/* ================= Core constants ================= */
+const DOMAINS=["Linguistic","Logical-Mathematical","Musical","Spatial-Visual","Bodily-Kinesthetic","Interpersonal","Intrapersonal","Naturalistic"];
+const ICON={"Linguistic":"📚","Logical-Mathematical":"🔢","Musical":"🎵","Spatial-Visual":"🎨","Bodily-Kinesthetic":"🤸","Interpersonal":"🤝","Intrapersonal":"🧠","Naturalistic":"🌳"};
+const DEPTH_MAP={24:3,40:5,64:8};
+const ANCHORS_PER_DOMAIN=3;
+const SCORE=[3,2,1,0];
+const AVATARS=["🦊","🐼","🦄","🐯","🐨","🐸","🐙","🐝","🐧","🐶","🐱","🐹","🦋","🦕"];
+
+/* ================= State & DOM refs ================= */
+let state={name:"",age:7,depth:40,lang:"en",avatar:AVATARS[0],seq:[],idx:0,answers:{},coins:0,skips:3,teacher:false,tts:false};
+const $=s=>document.querySelector(s);
+const conf=$("#confetti"), cctx=conf.getContext("2d");
+const nameEl=$("#name"), ageEl=$("#age"), depthEl=$("#depth"), langEl=$("#lang");
+const startBtn=$("#startBtn"), resumeBtn=$("#resumeBtn"), teacherView=$("#teacherView");
+const intro=$("#intro"), stage=$("#stage"), results=$("#results");
+const avatarEmojiTop=$("#avatarEmoji"), avatarNameTop=$("#avatarName");
+const avatarEmojiStage=$("#avatarEmojiStage"), avatarNameStage=$("#avatarNameStage");
+const avatarEmojiRes=$("#avatarEmojiRes"), avatarNameRes=$("#avatarNameRes");
+const coinsTop=$("#coinsTop"), coinsStage=$("#coins"), coinsRes=$("#coinsRes");
+const chip=$("#chip"), qcount=$("#qcount"), bar=$("#bar"), qtext=$("#qtext"), answersEl=$("#answers"), parallax=$("#parallax");
+const backBtn=$("#backBtn"), skipBtn=$("#skipBtn"), saveBtn=$("#saveBtn"), nextBtn=$("#nextBtn"), skipsEl=$("#skips");
+const radarCanvas=$("#radar"), topList=$("#topList"), summary=$("#summary"), quality=$("#quality"), teacherStats=$("#teacherStats");
+const printBtn=$("#printBtn"), csvBtn=$("#csvBtn"), jsonBtn=$("#jsonBtn"), restartBtn=$("#restartBtn");
+const ttsToggle=$("#ttsToggle"), ttsLabel=$("#ttsLabel"), ttsReplay=$("#ttsReplay");
+
+/* ================= UI sounds ================= */
+const Sounds=(()=>{
+  let ctx; const ensure=()=>ctx||(ctx=new (window.AudioContext||window.webkitAudioContext)());
+  function blip(f=600,d=0.07,type="sine",v=0.12){ensure();const t=ctx.currentTime,o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.value=f;g.gain.value=0;o.connect(g).connect(ctx.destination);g.gain.linearRampToValueAtTime(v,t+0.01);g.gain.exponentialRampToValueAtTime(0.0001,t+d);o.start(t);o.stop(t+d+0.02)}
+  function coin(){ensure();const t=ctx.currentTime,o=ctx.createOscillator(),g=ctx.createGain();o.type="triangle";o.frequency.setValueAtTime(1200,t);o.frequency.exponentialRampToValueAtTime(2200,t+0.06);g.gain.setValueAtTime(0.001,t);g.gain.exponentialRampToValueAtTime(0.2,t+0.01);g.gain.exponentialRampToValueAtTime(0.001,t+0.25);o.connect(g).connect(ctx.destination);o.start(t);o.stop(t+0.3)}
+  function success(){ensure();[[660,0.06],[880,0.08],[990,0.12]].forEach(([f,d],i)=>{const t=ctx.currentTime+i*0.07,o=ctx.createOscillator(),g=ctx.createGain();o.type="sine";o.frequency.value=f;g.gain.value=0;o.connect(g).connect(ctx.destination);g.gain.linearRampToValueAtTime(0.18,t+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t+d);o.start(t);o.stop(t+d+0.02)})}
+  return {blip,coin,success};
+})();
+
+/* ================= RNG ================= */
+function xhash(str){let h=1779033703^str.length; for(let i=0;i<str.length;i++){h = Math.imul(h^str.charCodeAt(i),3432918353); h = (h<<13)|(h>>>19);} return (h>>>0);}
+function mulberry32(a){return function(){let t=a+=0x6D2B79F5;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return ((t^t>>>14)>>>0)/4294967296;}}
+function seededShuffle(arr, seed){ const rng = mulberry32(seed); const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(rng()*(i+1)); [a[i],a[j]]=[a[j],a[i]] } return a; }
+
+/* ================= Build sequence (anchors + extras) ================= */
+function getBank(lang, age){ const pack=BANKS[lang] || BANKS.en; return age<=8?pack.YOUNG:pack.OLDER; }
+function buildSeq(name, age, depth, lang){
+  const per = DEPTH_MAP[depth]||3;
+  const bank = getBank(lang, age);
+  const anchorSeed = xhash(`A:${name}:${age}:${lang}`);
+  const extraSeed  = xhash(`E:${name}:${age}:${lang}:${depth}`);
+
+  const anchorBlocks = DOMAINS.map(d=>{
+    const items = bank[d].slice(0, ANCHORS_PER_DOMAIN).map((t,idx)=>({id:`${d[0]}A${idx+1}`, d, t, anchor:true}));
+    return seededShuffle(items, xhash(d)+anchorSeed);
+  });
+  const extrasNeeded = Math.max(0, per - ANCHORS_PER_DOMAIN);
+  const extraBlocks = DOMAINS.map(d=>{
+    const pool = bank[d].slice(ANCHORS_PER_DOMAIN).map((t,idx)=>({id:`${d[0]}E${idx+1}`, d, t, anchor:false}));
+    const shuffled = seededShuffle(pool, xhash(d)+extraSeed);
+    return shuffled.slice(0, extrasNeeded);
+  });
+
+  const combined = DOMAINS.map((_,i)=>[...anchorBlocks[i], ...extraBlocks[i]]);
+  const seq=[];
+  for(let r=0;r<ANCHORS_PER_DOMAIN;r++){ for(let i=0;i<combined.length;i++){ if(combined[i][r]) seq.push(combined[i][r]); } }
+  for(let r=ANCHORS_PER_DOMAIN;r<per;r++){ for(let i=0;i<combined.length;i++){ if(combined[i][r]) seq.push(combined[i][r]); } }
+  return seq;
+}
+
+/* ================= Theme ================= */
+function themeFor(d){
+  return {
+    "Linguistic":{bg:"var(--L)", icons:["📚","✍️","🔤","🗣️"]},
+    "Logical-Mathematical":{bg:"var(--M)", icons:["🔢","🧮","♟️","🧩"]},
+    "Musical":{bg:"var(--MU)", icons:["🎵","🥁","🎹","🎧"]},
+    "Spatial-Visual":{bg:"var(--S)", icons:["🎨","🧩","🗺️","🧱"]},
+    "Bodily-Kinesthetic":{bg:"var(--B)", icons:["🤸","🏃","🛠️","🎯"]},
+    "Interpersonal":{bg:"var(--E)", icons:["🤝","🗨️","👥","💬"]},
+    "Intrapersonal":{bg:"var(--I)", icons:["🧠","📝","🧘","🎯"]},
+    "Naturalistic":{bg:"var(--N)", icons:["🌳","🪨","🍃","🐾"]}
+  }[d];
+}
+function setStageTheme(d){
+  const t=themeFor(d);
+  $("#qwrap").style.background=`linear-gradient(180deg, ${t.bg}, #ffffff)`;
+  parallax.innerHTML="";
+  for(let i=0;i<6;i++){
+    const el=document.createElement("div");
+    el.className="picon"; el.textContent=t.icons[i%t.icons.length];
+    el.style.left=(Math.random()*90+5)+"%"; el.style.top=(Math.random()*50+5)+"%";
+    el.style.animationDelay=(Math.random()*6)+"s"; parallax.appendChild(el);
+  }
+}
+
+/* ================= i18n apply ================= */
+function applyI18N(){
+  const T=I18N[state.lang]||I18N.en;
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const key=el.getAttribute("data-i18n"); if(typeof T[key]==="string") el.textContent=T[key];
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el=>{
+    const key=el.getAttribute("data-i18n-placeholder"); if(typeof T[key]==="string") el.placeholder=T[key];
+  });
+  $("#depth").querySelectorAll("option").forEach(opt=>{
+    const key=opt.getAttribute("data-i18n"); if(key && T[key]) opt.textContent=T[key];
+  });
+  $("#ttsLabel").textContent = state.tts ? (T.ttsOn||"Speaking…") : (T.ttsOff||"Read Aloud");
+}
+
+/* ================= Avatars ================= */
+function renderAvatars(){
+  const wrap=$("#avatarWrap"); wrap.innerHTML="";
+  AVATARS.forEach((emo,i)=>{
+    const label=document.createElement("label");
+    label.innerHTML=`<input type="radio" name="av" ${i===0?'checked':''}><span class="tile">${emo}</span>`;
+    label.querySelector("input").addEventListener("change",()=>{state.avatar=emo; syncHeader(); Sounds.blip(660,0.06,"sine",0.08);});
+    wrap.appendChild(label);
+  });
+}
+
+/* ================= TTS ================= */
+const TTS = (function(){
+  const synth = window.speechSynthesis;
+  let lastUtterances=[]; let currentLang="en";
+  function getVoicesFor(lang){
+    const vs = synth.getVoices();
+    const prefs = { en:[/en(-|_)?(US|GB|AU|CA)/i,/en/i], zh:[/zh(-|_)?(CN|Hans)/i,/Chinese/i,/zh/i], es:[/es(-|_)?/i,/es/i], fr:[/fr(-|_)?/i,/fr/i] }[lang]||[/./];
+    for(const rx of prefs){ const cand=vs.filter(v=>rx.test(v.lang)||rx.test(v.name)); if(cand.length) return cand; }
+    return vs;
+  }
+  function rate(age){ if(age<=8) return 0.9; if(age<=12) return 1.0; return 1.05; }
+  function speakChunks(chunks,{lang="en",age=8}={}){
+    stop(); currentLang=lang;
+    const voices=getVoicesFor(lang); const voice=voices[0]||null; const r=rate(age);
+    lastUtterances=chunks.map(txt=>{ const u=new SpeechSynthesisUtterance(txt); u.lang=(voice&&voice.lang)||(lang==="zh"?"zh-CN":lang); if(voice) u.voice=voice; u.rate=r; u.pitch=1; u.volume=1; return u; });
+    lastUtterances.forEach(u=>synth.speak(u));
+  }
+  function stop(){ try{ speechSynthesis.cancel(); }catch(e){} lastUtterances=[]; }
+  function replay(){ if(!lastUtterances.length) return false; const texts=lastUtterances.map(u=>u.text); speakChunks(texts,{lang:currentLang,age:state.age}); return true; }
+  if(synth && typeof synth.onvoiceschanged!=="undefined"){ synth.onvoiceschanged=()=>{}; }
+  return {speakChunks, stop, replay};
+})();
+
+/* ================= Header sync ================= */
+function syncHeader(){
+  const nm=state.name||"";
+  $("#avatarEmoji").textContent=$("#avatarEmojiStage").textContent=$("#avatarEmojiRes").textContent=state.avatar;
+  $("#avatarName").textContent=$("#avatarNameStage").textContent=$("#avatarNameRes").textContent=nm;
+  coinsTop.textContent=coinsStage.textContent=coinsRes.textContent=String(state.coins);
+}
+
+/* ================= Start / Resume / Language ================= */
+$("#startBtn").addEventListener("click", ()=>{
+  const nm=nameEl.value.trim(); const age=Number(ageEl.value||0); const depth=Number(depthEl.value||24);
+  if(!nm){alert((I18N[state.lang]||I18N.en).namePH);return}
+  if(age<5||age>16){alert("Please enter age 5–16.");return}
+  state={...state,name:nm,age,depth,teacher:teacherView.checked,coins:0,skips:3,answers:{},idx:0};
+  state.seq = buildSeq(nm, age, depth, state.lang);
+  show(stage); hide(intro); syncHeader(); applyI18N(); renderQuestion(); Sounds.success();
+});
+$("#resumeBtn").addEventListener("click", ()=>{
+  const s=JSON.parse(localStorage.getItem("mi_kids_save")||"null");
+  if(!s){alert("No saved progress found.");return}
+  state=s; show(stage); hide(intro); syncHeader(); applyI18N(); renderQuestion(); Sounds.success();
+});
+$("#lang").addEventListener("change", (e)=>{
+  state.lang = e.target.value;
+  if(state.name && state.age && state.depth){
+    const prevAns=state.answers, prevIdx=state.idx;
+    state.seq = buildSeq(state.name, state.age, state.depth, state.lang);
+    state.answers={}; for(const it of state.seq){ if(prevAns[it.id]!=null) state.answers[it.id]=prevAns[it.id]; }
+    state.idx=Math.min(prevIdx, state.seq.length-1);
+  }
+  applyI18N(); if(!stage.classList.contains("hidden")) renderQuestion(); renderResultsLocalizedBits();
+});
+
+/* TTS buttons */
+ttsToggle.addEventListener("click", ()=>{ state.tts=!state.tts; applyI18N(); if(!state.tts) TTS.stop(); else speakCurrent(); });
+ttsReplay.addEventListener("click", ()=>{ if(!speakCurrent(true)){ Sounds.blip(420,0.06,"sine",0.06);} });
+document.addEventListener("keydown",(e)=>{ if(e.key.toLowerCase()==="r") speakCurrent(true); if(e.key.toLowerCase()==="m"){ state.tts=!state.tts; applyI18N(); if(!state.tts) TTS.stop(); else speakCurrent(); }});
+
+/* ================= Question rendering ================= */
+function cur(){return state.seq[state.idx]}
+function setStage(d){
+  const T=I18N[state.lang]||I18N.en;
+  chip.textContent=`${ICON[d]} ${(T.domains?.[d]||d)}`;
+  qcount.textContent=`${state.idx+1}/${state.seq.length}`;
+  bar.style.width=`${Math.round(state.idx/state.seq.length*100)}%`;
+  const theme=themeFor(d); $("#qwrap").style.background=`linear-gradient(180deg, ${theme.bg}, #ffffff)`; setStageTheme(d);
+}
+function renderQuestion(){
+  const it=cur(); if(!it){finish(); return;}
+  setStage(it.d);
+  qtext.textContent=it.t;
+  const T=I18N[state.lang]||I18N.en;
+  answersEl.innerHTML="";
+  (T.choices||I18N.en.choices).forEach((txt,i)=>{
+    const lab=document.createElement("label");
+    const inp=document.createElement("input"); inp.type="radio"; inp.name="ans"; inp.value=String(i);
+    if(state.answers[it.id]===i) inp.checked=true;
+    inp.addEventListener("change",()=>Sounds.blip(520+40*i,0.06,"square",0.06));
+    lab.appendChild(inp); lab.appendChild(Object.assign(document.createElement("span"),{textContent:txt}));
+    answersEl.appendChild(lab);
+  });
+  document.onkeydown=(e)=>{ if(["1","2","3","4"].includes(e.key)){ const idx=Number(e.key)-1; const radios=answersEl.querySelectorAll('input[name="ans"]'); if(radios[idx]){ radios[idx].checked=true; Sounds.blip(520+40*idx,0.06,"square",0.06); } } };
+  skipsEl.textContent=String(state.skips); syncHeader();
+  if(state.tts) speakCurrent();
+}
+function speakCurrent(){
+  if(!state.tts) return false; const it=cur(); if(!it) return false;
+  const T=I18N[state.lang]||I18N.en; const domain=(T.domains?.[it.d]||it.d); const choices=(T.choices||I18N.en.choices);
+  const chunks=[`${domain}.`, it.t, `${choices[0]}.`, `${choices[1]}.`, `${choices[2]}.`, `${choices[3]}.`];
+  TTS.stop(); TTS.speakChunks(chunks,{lang:state.lang,age:state.age}); return true;
+}
+
+/* ================= Nav & coins ================= */
+function coinFloat(n){
+  const t=document.querySelector(".top-right .coin-pill"); if(!t) return;
+  const r=t.getBoundingClientRect(); const el=document.createElement("div"); el.className="coin-float"; el.textContent="🪙 +"+n;
+  el.style.left=(r.left+20)+"px"; el.style.top=(r.top-8)+"px"; document.body.appendChild(el); setTimeout(()=>el.remove(),800);
+}
+function addCoins(choiceIdx){ const add = SCORE[choiceIdx]>0 ? 1 : 0; if(add>0){ state.coins+=add; coinFloat(add); Sounds.coin(); syncHeader(); } }
+
+backBtn.onclick=()=>{ TTS.stop(); if(state.idx>0){ state.idx--; renderQuestion(); } else { hide(stage); show(intro); } };
+skipBtn.onclick=()=>{ TTS.stop(); if(state.skips>0){ state.skips--; skipsEl.textContent=String(state.skips); next(); } else alert("No skips left."); };
+saveBtn.onclick=()=>{ TTS.stop(); localStorage.setItem("mi_kids_save", JSON.stringify(state)); alert("Saved!"); Sounds.blip(760,0.06,"sine",0.08); };
+nextBtn.onclick=()=>{ if(saveAnswer()){ TTS.stop(); next(); } };
+
+function saveAnswer(){
+  const sel=answersEl.querySelector('input[name="ans"]:checked'); if(!sel){ alert("Please pick an answer."); return false; }
+  const choice=Number(sel.value); const id=cur().id; const was=state.answers[id];
+  state.answers[id]=choice; if(was===undefined) addCoins(choice);
+  return true;
+}
+function next(){ if(state.idx<state.seq.length-1){ state.idx++; renderQuestion(); } else { finish(); } }
+
+/* ================= Scoring ================= */
+let _radar=null; window._radarChart=null;
+function score(){
+  const perDomain={}; for(const d of DOMAINS){ perDomain[d]={A:{sum:0,n:0},E:{sum:0,n:0},all:{sum:0,n:0}}; }
+  state.seq.forEach(it=>{ const v=state.answers[it.id]; if(v==null) return; const s=SCORE[v]; const b=it.anchor?"A":"E"; perDomain[it.d][b].sum+=s; perDomain[it.d][b].n++; perDomain[it.d].all.sum+=s; perDomain[it.d].all.n++;});
+  const norm={}, counts={};
+  for(const d of DOMAINS){
+    const A=perDomain[d].A, E=perDomain[d].E; const Amax=A.n*3, Emax=E.n*3;
+    const Aperc = Amax? (A.sum/Amax)*100 : null; const Eperc = Emax? (E.sum/Emax)*100 : null;
+    let sc=0;
+    if(Aperc==null && Eperc==null) sc=0;
+    else if(Aperc!=null && Eperc==null) sc=Aperc;
+    else if(Aperc==null && Eperc!=null) sc=Eperc;
+    else { const diff=Math.abs(Eperc-Aperc); let Eadj=Eperc; if(diff>25){ const overshoot=diff-25; const sign=Math.sign(Eperc-Aperc); Eadj = Eperc - sign*(overshoot*0.5); } sc = 0.6*Aperc + 0.4*Eadj; }
+    norm[d]=Math.round(sc); counts[d]=perDomain[d].all.n;
+  }
+  return {norm,counts,perDomain};
+}
+function consistency(){
+  let A=0,B=0,cA=0,cB=0; state.seq.forEach((it,i)=>{const v=state.answers[it.id]; if(v==null) return; const s=SCORE[v]; if(i%2){B+=s;cB++;} else {A+=s;cA++;}});
+  if(cA<4||cB<4) return "—"; const rel=1-Math.abs(A/cA-B/cB)/3; return rel<0?"0.00":rel.toFixed(2);
+}
+
+/* ================= Results ================= */
+function renderResultsLocalizedBits(){
+  const T=I18N[state.lang]||I18N.en;
+  summary.textContent=(T.resultsLine||I18N.en.resultsLine)(state.name||"");
+  if(window._radarChart){
+    window._radarChart.data.labels = DOMAINS.map(d=>ICON[d]+" "+(T.domains[d]||d));
+    window._radarChart.update();
+  }
+}
+function finish(){
+  hide(stage); show(results); confettiBurst(150); Sounds.success(); TTS.stop();
+  const {norm,counts,perDomain}=score(); const T=I18N[state.lang]||I18N.en;
+  summary.textContent=(T.resultsLine||I18N.en.resultsLine)(state.name||"");
+  const labels=DOMAINS.map(d=>ICON[d]+" "+(T.domains[d]||d)), data=DOMAINS.map(d=>norm[d]);
+  if(_radar) _radar.destroy();
+  _radar=new Chart(radarCanvas.getContext("2d"),{ type:"radar", data:{labels,datasets:[{label:"Profile",data,fill:true,pointRadius:3}]}, options:{scales:{r:{beginAtZero:true,max:100,ticks:{stepSize:20}}},plugins:{legend:{display:false}}}});
+  window._radarChart=_radar;
+  const top=[...DOMAINS].sort((a,b)=>norm[b]-norm[a]).slice(0,3); topList.innerHTML=""; top.forEach(d=>{const li=document.createElement("li"); li.textContent=`${ICON[d]} ${(T.domains[d]||d)} — ${norm[d]}/100`; topList.appendChild(li);});
+  const consLabel = {en:"Response consistency", zh:"回答一致性", es:"Coherencia de respuestas", fr:"Cohérence des réponses"}[state.lang]||"Response consistency";
+  const stabLabel = {en:"Anchor–extra agreement", zh:"锚题与附加题一致性", es:"Acuerdo anclas–extras", fr:"Accord ancrages–suppl."}[state.lang]||"Anchor–extra agreement";
+  const diverge = DOMAINS.map(d=>{ const A=perDomain[d].A,E=perDomain[d].E; if(!A.n||!E.n) return null; const Aperc=(A.sum/(A.n*3))*100, Eperc=(E.sum/(E.n*3))*100; const diff=Math.abs(Eperc-Aperc); return diff>25?`${(T.domains[d]||d)}△${Math.round(diff)}%`:null;}).filter(Boolean);
+  quality.textContent=`${consLabel}: ${consistency()}   ${stabLabel}: ${diverge.length?diverge.join(" • "):"✓"}`;
+  teacherStats.textContent = state.teacher ? `${({en:"Items per domain", zh:"每个维度题量", es:"Ítems por inteligencia", fr:"Items par domaine"}[state.lang]||"Items per domain")}: ` + DOMAINS.map(d=>`${(T.domains[d]||d)}:${counts[d]||0}`).join(" | ") : "";
+  coinsRes.textContent=String(state.coins); syncHeader();
+  printBtn.onclick=()=>window.print(); csvBtn.onclick=exportCSV; jsonBtn.onclick=exportJSON; restartBtn.onclick=()=>{ show(intro); hide(results); };
+}
+
+/* ================= Exports ================= */
+function exportCSV(){ const {norm}=score(); const header=["Name","Age","Depth","Lang","Coins",...DOMAINS].join(","); const row=[state.name,state.age,state.depth,state.lang,state.coins,...DOMAINS.map(d=>norm[d])].join(","); download("mi_profile.csv",header+"\n"+row+"\n"); }
+function exportJSON(){ download("mi_profile.json",JSON.stringify(state,null,2)); }
+function download(fname,text){ const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([text],{type:"text/plain"})); a.download=fname; a.click(); URL.revokeObjectURL(a.href); }
+
+/* ================= Confetti ================= */
+function sizeCanvas(){conf.width=innerWidth; conf.height=innerHeight} sizeCanvas(); addEventListener("resize",sizeCanvas);
+let puff=[]; let raf=null;
+function confettiBurst(n=80){ for(let i=0;i<n;i++){puff.push({x:innerWidth/2,y:innerHeight/4,vx:(Math.random()-0.5)*7,vy:-Math.random()*6-2,g:0.15+Math.random()*0.05,r:2+Math.random()*3});} if(!raf) loop(); }
+function loop(){ raf=requestAnimationFrame(loop); cctx.clearRect(0,0,conf.width,conf.height); puff.forEach(p=>{p.vy+=p.g; p.x+=p.vx; p.y+=p.vy; cctx.fillStyle=`hsl(${Math.random()*360},70%,60%)`; cctx.beginPath(); cctx.arc(p.x,p.y,p.r,0,Math.PI*2); cctx.fill();}); puff=puff.filter(p=>p.y<innerHeight+20); if(!puff.length){cancelAnimationFrame(raf); raf=null;}}
+
+/* ================= Helpers ================= */
+function show(el){el.classList.remove("hidden")} function hide(el){el.classList.add("hidden")}
+function renderResultsLocalizedBits(){ const T=I18N[state.lang]||I18N.en; summary.textContent=(T.resultsLine||I18N.en.resultsLine)(state.name||""); if(window._radarChart){ window._radarChart.data.labels=DOMAINS.map(d=>ICON[d]+" "+(T.domains[d]||d)); window._radarChart.update(); } }
+
+/* ================= Init ================= */
+document.addEventListener("DOMContentLoaded",()=>{ renderAvatars(); syncHeader(); applyI18N(); });
+</script>
+</body>
+</html>

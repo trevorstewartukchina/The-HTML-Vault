@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Leadership Journey</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0b0f1a;
+      font-family: 'Roboto', sans-serif;
+      color: #e7ecff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      position: relative;
+      width: 80%;
+      height: 70%;
+    }
+
+    header h1 {
+      font-size: 36px;
+      color: #8a7dff;
+      animation: glow 1s infinite alternate;
+    }
+
+    header p {
+      font-size: 18px;
+      color: #cfd7ff;
+    }
+
+    #scene-container {
+      position: relative;
+      width: 100%;
+      height: 80%;
+      background: linear-gradient(90deg, rgba(138, 125, 255, 0.25), transparent);
+      margin: 20px 0;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+
+    .scene {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .scene.active {
+      opacity: 1;
+    }
+
+    .scene-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 30px;
+      color: #cfd7ff;
+      text-shadow: 0 0 20px rgba(138, 125, 255, 0.5);
+      opacity: 0;
+      animation: fadeInText 2s forwards;
+    }
+
+    @keyframes fadeInText {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    #progress-bar {
+      width: 100%;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+
+    #progress-bar .bar {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transition: width 0.5s;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>AI Leadership Journey</h1>
+      <p class="intro">How AI is reshaping leadership</p>
+    </header>
+
+    <div id="scene-container">
+      <div class="scene active" id="scene1">
+        <div class="scene-text">AI Advances, Humanity Thrives</div>
+      </div>
+      <div class="scene" id="scene2">
+        <div class="scene-text">Trevor’s Journey: From Python to HTML</div>
+      </div>
+      <div class="scene" id="scene3">
+        <div class="scene-text">ChatGPT as a Mentor</div>
+      </div>
+      <div class="scene" id="scene4">
+        <div class="scene-text">Leadership Challenges & Time Management</div>
+      </div>
+      <div class="scene" id="scene5">
+        <div class="scene-text">Digital Mentor Challenge</div>
+      </div>
+      <div class="scene" id="scene6">
+        <div class="scene-text">Reflection: AI Amplifies Leadership</div>
+      </div>
+    </div>
+
+    <footer>
+      <div id="progress-bar">
+        <div class="bar"></div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const scenes = document.querySelectorAll('.scene');
+    const progressBar = document.querySelector('#progress-bar .bar');
+    let currentScene = 0;
+    const sceneDuration = 30; // Duration per scene in seconds
+    const totalScenes = scenes.length;
+
+    function nextScene() {
+      scenes[currentScene].classList.remove('active');
+      currentScene++;
+      if (currentScene >= totalScenes) {
+        currentScene = 0; // Loop back to the first scene
+      }
+      scenes[currentScene].classList.add('active');
+      updateProgressBar();
+    }
+
+    function updateProgressBar() {
+      const progress = (currentScene / totalScenes) * 100;
+      progressBar.style.width = `${progress}%`;
+    }
+
+    setInterval(nextScene, sceneDuration * 1000); // Change scene every 30 seconds
+    nextScene(); // Initialize the first scene
+  </script>
+</body>
+</html>
